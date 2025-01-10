@@ -12,14 +12,18 @@ import { Label } from "@/components/ui/label";
 import { useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthProvider";
 
 export function LoginForm({ className, ...props }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const formRef = useRef(null);
 
-  const { toast } = useToast();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const loginClick = async () => {
     const form = formRef.current;
@@ -30,10 +34,8 @@ export function LoginForm({ className, ...props }) {
 
     try {
       await invoke("login", { email, password });
-      toast({
-        title: "login",
-        description: "success",
-      });
+      login({ id: 1, email: "admin@admin.com" });
+      navigate("/");
     } catch (error) {
       toast({
         title: "login",

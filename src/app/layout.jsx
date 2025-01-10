@@ -1,10 +1,11 @@
 import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ModeToggle } from "@/app/darkmode";
 import { useAuth } from "@/context/AuthProvider";
 import { Toaster } from "@/components/ui/toaster";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 
-export default function RootLayout({ children }) {
+export default function RootLayout() {
   const location = useLocation();
   const { user } = useAuth();
 
@@ -20,8 +21,10 @@ export default function RootLayout({ children }) {
         enableSystem
         disableTransitionOnChange
       >
-        <Outlet />
-        <ModeToggle />
+        <SidebarProvider>
+          <AppSidebar />
+          <Outlet />
+        </SidebarProvider>
         <Toaster />
       </ThemeProvider>
     </>
